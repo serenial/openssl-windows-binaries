@@ -1,29 +1,29 @@
-# OpenSSL Binaries for Windows
-Building OpenSSL appears to be quite complicated on Windows and requires a number of tools and stages whilst avoiding many pitfalls.
+# OpenSSLv1.1.1 Binaries for Windows
+Building OpenSSL can be quite straight-forward with a fair wind but it is a somewhat manual process.
 
 ## Obtaining the Source
 The OpenSSL source is included in the `/src` folder as `git submodules`. A 64-bit and 32-bit directory is required as the build system leaves artifacts which can upset building of the other versions. The currently checked-out commit is the tagged-release `1_1_1d`.
 
 ## Build Tools
 
-The OpenSSL library makes use of PERL for configuration of builds and uses NASM to complete the build process so ensure the following tools are installed.
+The OpenSSL library makes use of `PERL` for configuration of builds and uses `NASM` [The Netwide Assembler] to complete the build process so ensure the following tools are installed;
 
-* [Active Perl](https://www.activestate.com/products/perl/)
-* [The Netwide Assembler - NASM](https://nasm.us/)
+* [Strawberry Perl](http://strawberryperl.com/)
+    - Active Perl should be suitable but I had issues installing perl modules with `cpan` as the MinGW tooling that Active Perl calls didn't install as expected so couldn't build the packages - maybe because I already have MinGW installed elsewhere. This means the perl-module installation would always fail.
+
+* [NASM](https://nasm.us/)
+
 * Visual Studio (2015 used for this build)
 
 ## Setting Up Tools
-* The availability of a GC++ compiler on your `PATH` environmental-variable might cause problems. The easiest solution is to edit your `PATH` so that tools like `C:\MinWG` aren't found.
-
-* Launch The Visual Studio Command Prompt.
+1. Launch The Visual Studio Command Prompt.
     - Building requires a number of Visual Studio tools which are most easily accessed via the Visual Studio Visual Studio Command Prompt (VS2015 [x86 or x64] Native Tools Command Prompt)
 
-* Ensure that `PERL` and `NASM` tools are correctly installed and that Visual Studio's `nmake` is available;
+1. Ensure that `PERL` and `NASM` tools are correctly installed and that Visual Studio's `nmake` is available;
 
     - For `PERL` the command `perl -v` should yield something similar to:
         ```shell
-            This is perl 5, version 28, subversion 1 (v5.28.1) built for MSWin32-x64-multi-thread
-            (with 1 registered patch, see perl -V for more detail)
+            This is perl 5, version 30, subversion 1 (v5.30.1) built for MSWin32-x86-multi-thread-64int
             
             ...etc.
         ```
@@ -37,19 +37,46 @@ The OpenSSL library makes use of PERL for configuration of builds and uses NASM 
 
      If these tools aren't found then ensure they are available on your `PATH` environmental-variable or you manually set the `PATH` variable in the command prompt session. If `nmake` is not found, check you are using the Visual Studio Command Prompt and consider re-installing Visual Studio.
 
-* According to [NOTES.PERL](https://github.com/serenial/openssl/blob/master/NOTES.PERL) some additional PERL modules are also required. To install these modules use the `cpan` tool
-```shell
- cpan -i Text::Template
- cpan -i Test::More <optional install>
-```
+1. Instal the `PERL` modules as listed as required in [NOTES.PERL](https://github.com/serenial/openssl/blob/master/NOTES.PERL) with the `cpan` tool, which itself needs setting up if you haven't used it before.
 
-## Building 32-bit Static Binaries
-* Run Visual Studio Command Prompt (VS2015 x86 Native Tools Command Prompt)
+    - To setup `cpan` open a command prompt with administrator-privileges and enter `cpan` to launch the interactive cpan command-line
+
+    - Perform the automatic setup using  the command `o conf init`
+
+    - Use the default options and follow the instructions to commit the changes to the config
+
+    - Exit the `cpan` interactive command-line with the `quit` command
+
+    - Install the required modules using:
+
+        ```shell
+        cpan -i Text::Template
+        cpan -i Test::More <optional install>
+        ```
+
+
+## Building 64-bit Binaries
+* Run Visual Studio Command Prompt (VS2015 **x64** Native Tools Command Prompt)
+
+* `cd` into the `src/64` directory
+
+* Run the following commands
+    ```shell
+    perl Configure VC-WIN64A
+    nmake
+    nmake test
+    nmake install #(requires a command prompt with administrator-privileges)
+    ```
+
+## Building 32-bit Binaries
+* Run Visual Studio Command Prompt (VS2015 **x86** Native Tools Command Prompt)
+* ensure that the `rc.exe` tool from the x86 Windows Kit is accessible (I added `C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x86` to my path user-variable)
 * `cd` into the `src/32` directory
+
 * Run the following commands
     ```shell
     perl Configure VC-WIN32
     nmake
     nmake test
-    nmake install
+    nmake install #(requires a command prompt with administrator-privileges)
     ```
