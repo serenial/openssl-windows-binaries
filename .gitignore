@@ -46,3 +46,14 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# VScode Files
+.vscode
+
+# Unwanted Build Files
+build/**/certs
+build/**/html
+build/**/private
+build/**/misc
+build/**/*.cnf*
+build/**/*.pl
