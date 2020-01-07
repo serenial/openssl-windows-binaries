@@ -4,7 +4,9 @@ Building OpenSSL can be quite straight-forward with a fair wind but it is a some
 ## Cloning This Repository
 The OpenSSL source is included in the `/src` folder as `git submodules`. A 64-bit and 32-bit directory is required as the build system leaves artifacts which can upset building of the other versions. The currently checked-out commit is the tagged-release `1_1_1d`.
 
-To clone this repository and its submodules, clone the main repository with:
+If you only want to get the built binaries then you *don't need to clone the submodules* - just use a normal `git clone` 
+
+To build yourself, clone this repository and its submodules with:
 ```shell
 git clone --recursive <GIT_REPO_URL>
 ```
