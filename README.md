@@ -75,7 +75,7 @@ The OpenSSL library makes use of `PERL` for configuration of builds and uses `NA
 
 * Run the following commands
     ```shell
-    perl Configure VC-WIN32
+    perl Configure VC-WIN32 --prefix=<ABSOLUTE_PATH_TO_INSTALL> --openssldir=<ABSOLUTE_PATH_TO_INSTALL>
     nmake
     nmake test
     nmake install #(requires a command prompt with administrator-privileges)
