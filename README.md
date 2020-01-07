@@ -91,3 +91,6 @@ The OpenSSL library makes use of `PERL` for configuration of builds and uses `NA
     nmake test
     nmake install #(requires a command prompt with administrator-privileges)
     ```
+    
+## Additional Resources
+* [Detailed Instructions and Pre-Compiled Versions](http://www.p-nand-q.com/programming/windows/building_openssl_with_visual_studio_2013.html)
